@@ -83,7 +83,7 @@ print-%:
 	@#printf "  CC      $(*).c\n"
 	$(CC) $(TGT_CFLAGS) $(CFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).c
 
-%.o: %.asm
+%.o: %.s
 	$(AS) $(ASFLAGS) -o $*.o -c $<
 
 clean:
@@ -95,11 +95,7 @@ clobber: clean
 
 # Flash 64k Device
 flash:	$(BINARY).bin
-	$(STFLASH) $(FLASHSIZE) write $(BINARY).bin 0x8000000
-
-# Flash 128k Device
-bigflash: $(BINARY).bin
-	$(STFLASH) --flash=128k write $(BINARY).bin 0x8000000
+	$(STFLASH) --flash=64k write $(BINARY).bin 0x8000000
 
 .PHONY: images clean elf bin hex srec list all
 
