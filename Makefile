@@ -2,6 +2,7 @@
 #  Adapted from libopencm3
 ######################################################################
 
+BINARY		= stm32fc
 PREFIX		?= arm-none-eabi
 
 FP_FLAGS	?= -msoft-float
@@ -42,15 +43,13 @@ TGT_LDFLAGS	+= -Wl,--gc-sections
 LDLIBS		+= -specs=nosys.specs
 LDLIBS		+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
-.SUFFIXES:	.elf .bin .hex .srec .list .map .images
-.SECONDEXPANSION:
-.SECONDARY:
+all: elf
 
-elf:	$(DEPS) $(BINARY).elf
-bin:	$(DEPS) $(BINARY).bin
-hex:	$(DEPS) $(BINARY).hex
-srec:	$(DEPS) $(BINARY).srec
-list:	$(DEPS) $(BINARY).list
+elf: $(BINARY).elf
+bin: $(BINARY).bin
+hex: $(BINARY).hex
+srec: $(BINARY).srec
+list: $(BINARY).list
 
 # Define a helper macro for debugging make errors online
 print-%:
@@ -93,12 +92,5 @@ clean:
 clobber: clean
 	rm -f *.elf *.bin *.hex *.srec *.list *.map $(CLOBBER)
 
-# Flash 64k Device
 flash:	$(BINARY).bin
 	$(STFLASH) --flash=64k write $(BINARY).bin 0x8000000
-
-.PHONY: images clean elf bin hex srec list all
-
--include $(OBJS:.o=.d)
-
-# End
