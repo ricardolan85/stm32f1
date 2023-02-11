@@ -1,14 +1,16 @@
-PROJECT		= stm32fc
-SOURCES  = main.c
+PROJECT	= stm32fc
+SOURCES	= main.c
 
-PREFIX		?= arm-none-eabi
-CC			:= $(PREFIX)-gcc
-OBJCOPY		:= $(PREFIX)-objcopy
+PREFIX	?= arm-none-eabi
+CC		= $(PREFIX)-gcc
+OBJCOPY	= $(PREFIX)-objcopy
 
-CFLAGS  = -g -O2 -Wall
-CFLAGS  += -mthumb -mcpu=cortex-m3 -msoft-float -mfix-cortex-m3-ldrd
+CFLAGS	= -g -O2 -Wall
+CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m3 -msoft-float
 CFLAGS  += -I./include/
-CFLAGS 	+= -D__GNUC__ -DSTM32F103xB
+CFLAGS 	+= -DSTM32F103xB
+
+LDFLAGS	= -Wl,--gc-sections --specs=nano.specs --specs=nosys.specs
 
 OBJS = $(SOURCES:.c=.o)
 
@@ -16,6 +18,7 @@ all: $(PROJECT).elf
 
 # compile
 $(PROJECT).elf: $(SOURCES)
-	$(CC) $(CFLAGS) $^ -o $@
-	$(OBJCOPY) -O ihex $(PROJECT).elf $(PROJECT).hex
-	$(OBJCOPY) -O binary $(PROJECT).elf $(PROJECT).bin
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+clean:
+	rm -rf *.elf *.hex
