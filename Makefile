@@ -10,14 +10,14 @@ PREFIX	= arm-none-eabi
 CC		= $(PREFIX)-gcc
 OBJCOPY	= $(PREFIX)-objcopy
 
-CFLAGS	= -g -O2 -Wall
+CFLAGS	= -W -Wall -g3 -Os -ffunction-sections -fdata-sections
 CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m3 -msoft-float
 CFLAGS  += -I./include/
 CFLAGS 	+= -D$(DEVICE)
 
 ASFLAGS	=  $(CFLAGS)
 
-LDFLAGS	= -T $(LDS) -Wl,--gc-sections --specs=nano.specs --specs=nosys.specs
+LDFLAGS	= -T$(LDS) --specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=$@.map
 
 OBJS = $(SOURCES:.c=.o)
 
@@ -33,8 +33,25 @@ $(PROJECT).elf: $(OBJ)
 %.o: %.s $(DEPS)
 	$(CC) -c $(ASFLAGS) $< -o $@
 
+bin: $(PROJECT).elf
+	$(OBJCOPY) -O binary $(PROJECT).elf $(PROJECT).bin
+
 hex: $(PROJECT).elf
 	$(OBJCOPY) -O ihex $(PROJECT).elf $(PROJECT).hex
 
+size: $(PROJECT).elf
+	$(PREFIX)-size $(PROJECT).elf
+
+readelf: $(PROJECT).elf
+	$(PREFIX)-readelf -s $(PROJECT).elf
+
+dump: $(PROJECT).elf
+	$(PREFIX)-objdump -d $(PROJECT).elf > $(PROJECT).dump
+
 clean:
-	rm -rf *.elf *.hex
+	del *.elf
+	del *.o
+	del *.hex
+	del *.bin
+	del *.dump
+	del *.map
