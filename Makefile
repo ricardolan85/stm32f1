@@ -10,7 +10,8 @@ PREFIX	= arm-none-eabi
 CC		= $(PREFIX)-gcc
 OBJCOPY	= $(PREFIX)-objcopy
 
-CFLAGS	= -W -Wall -g3 -Os -ffunction-sections -fdata-sections
+CFLAGS	=  -W -Wall 
+CFLAGS 	+= -g3 -Os -ffunction-sections -fdata-sections
 CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m3 -msoft-float
 CFLAGS  += -I./include/
 CFLAGS 	+= -D$(DEVICE)
