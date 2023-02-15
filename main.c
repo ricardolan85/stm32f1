@@ -7,21 +7,21 @@ static inline void spin(volatile uint32_t count) {
 void setup(){
 
   //clock PB
-  RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+  RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
 
   //PB3
-  GPIOB->CRL |= 0x00002000;
+  GPIOC->CRH |= 0x00200000;
   
 }
 
 void loop(){
 
   //on
-  GPIOB->BSRR = (1 << 3); //set PB3
+  GPIOC->BSRR = (1 << 13); //set PB3
   spin(999999);
   
   //off
-  GPIOB->BRR = (1 << 3); //reset PB3  
+  GPIOC->BSRR = (1 << 29); //reset PB3  
   spin(999999);
 
 }

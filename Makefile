@@ -1,5 +1,5 @@
 PROJECT	= stm32fc
-DEVICE	= STM32F103xB
+DEVICE	= STM32F103x6
 
 CSRCS	= ivt.c boot.c main.c 
 OBJ		= ivt.o boot.o main.o
