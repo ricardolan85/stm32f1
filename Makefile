@@ -1,10 +1,9 @@
 PROJECT	= stm32fc
 DEVICE	= STM32F103xB
 
-CSRCS	= main.c system_stm32f1xx.c
-ASRCS	= startup_stm32f103xb.s
-OBJ		= startup_stm32f103xb.o main.o system_stm32f1xx.o
-LDS		= stm32f103c8.ld
+CSRCS	= ivt.c boot.c main.c 
+OBJ		= ivt.o boot.o main.o
+LDS		= stm32fc.ld
 
 PREFIX	= arm-none-eabi
 CC		= $(PREFIX)-gcc
@@ -12,11 +11,9 @@ OBJCOPY	= $(PREFIX)-objcopy
 
 CFLAGS	=  -W -Wall 
 CFLAGS 	+= -g3 -Os -ffunction-sections -fdata-sections
-CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m3 -msoft-float
-CFLAGS  += -I./include/
+CFLAGS  += -mcpu=cortex-m3 -mlittle-endian -mthumb -msoft-float
+CFLAGS  += -I./include/ -I./ 
 CFLAGS 	+= -D$(DEVICE)
-
-ASFLAGS	=  $(CFLAGS)
 
 LDFLAGS	= -T$(LDS) --specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=$@.map
 
@@ -30,9 +27,6 @@ $(PROJECT).elf: $(OBJ)
 
 %.o: %.c $(DEPS)
 	$(CC) -c $(CFLAGS) $< -o $@
-
-%.o: %.s $(DEPS)
-	$(CC) -c $(ASFLAGS) $< -o $@
 
 bin: $(PROJECT).elf
 	$(OBJCOPY) -O binary $(PROJECT).elf $(PROJECT).bin

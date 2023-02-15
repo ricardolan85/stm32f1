@@ -5,7 +5,6 @@ void setup(){
   RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; //habilitado clock para PB
 
   //PB3
-  GPIOB->CRL &= ~(3 << 12); //MODE3 = 00 -  0x0 clear mode
   GPIOB->CRL |= (2 << 12); //MODE3 = 10 -  0x2 (output mode, max 2 mhz)
   GPIOB->CRL &= ~(3 << 14); //CNF3 = 00 - ~0x3 (output push-pull)
 
