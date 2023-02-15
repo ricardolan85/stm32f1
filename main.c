@@ -2,24 +2,24 @@
 
 void setup(){
 
-  RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; //habilitado clock para PB
+  //clock PB
+  RCC->APB2ENR |= 0x00000008;
 
   //PB3
-  GPIOB->CRL |= (2 << 12); //MODE3 = 10 -  0x2 (output mode, max 2 mhz)
-  GPIOB->CRL &= ~(3 << 14); //CNF3 = 00 - ~0x3 (output push-pull)
-
+  GPIOB->CRL |= 0x00002000;
+  
 }
 
 void loop(){
 
   //on
-  GPIOB->BSRR |= (1 << 3); //set PB3
-  for (uint32_t i = 0; i < 1000000; i++); //delay
+  GPIOB->BSRR = (1 << 3); //set PB3
+  for(int i=0;i<100000;i++);
   
   //off
-  GPIOB->BSRR |= (1 << 19); //reset PB3
-  for (uint32_t i = 0; i < 1000000; i++); //delay
-  
+  GPIOB->BRR = (1 << 3); //reset PB3  
+  for(int i=0;i<100000;i++);
+
 }
 
 int main(void) {
