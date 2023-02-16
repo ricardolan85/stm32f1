@@ -1,16 +1,18 @@
 #include <stm32f1xx.h>
 
+/* delay */
 static inline void spin(volatile uint32_t count) {
   while (count--) asm("nop");
 }
 
 void setup(){
 
-  //clock PB
+  //clock GPIOC
   RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
 
-  //PB3
-  GPIOC->CRH |= 0x00200000;
+  //PC13 - output push pull
+  GPIOC->CRH |= 0xFF0FFFFF; //clear
+  GPIOC->CRH |= 0x00200000; //set
   
 }
 
