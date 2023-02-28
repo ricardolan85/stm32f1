@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stm32f1xx.h": "c",
+        "cmsis_gcc.h": "c",
+        "stm32f103xb.h": "c",
+        "system_stm32f1xx.h": "c",
+        "stdint.h": "c",
+        "stm32f103x6.h": "c"
+    }
+}
