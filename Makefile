@@ -1,4 +1,4 @@
-PROJECT	= stm32fc
+PROJECT	= stm32f1
 DEVICE	= STM32F103x6
 
 CSRCS	= ivt.c boot.c main.c 
